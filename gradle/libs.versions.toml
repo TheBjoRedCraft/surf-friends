@@ -1,0 +1,22 @@
+[versions]
+velocity-api = "3.4.0-SNAPSHOT"
+velocity-annotation = "3.4.0-SNAPSHOT"
+
+mccoroutine-velocity-api = "2.21.0"
+mccoroutine-velocity-core = "2.21.0"
+
+kotlin-coroutines = "1.10.1"
+caffeine-coroutines = "2.0.0"
+
+[libraries]
+velocity-api = { module = "com.velocitypowered:velocity-api", version.ref = "velocity-api" }
+velocity-annotation = { module = "com.velocitypowered:velocity-api", version.ref = "velocity-annotation" }
+
+mccoroutine-velocity-api = { module = "com.github.shynixn.mccoroutine:mccoroutine-velocity-api", version.ref = "mccoroutine-velocity-api" }
+mccoroutine-velocity-core = { module = "com.github.shynixn.mccoroutine:mccoroutine-velocity-core", version.ref = "mccoroutine-velocity-core" }
+
+kotlin-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
+caffeine-coroutines = { module = "dev.hsbrysk:caffeine-coroutines", version.ref = "caffeine-coroutines" }
+
+[bundles]
+mccoroutine-velocity = ["mccoroutine-velocity-api", "mccoroutine-velocity-core"]
