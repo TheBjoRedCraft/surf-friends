@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm")
+    id("dev.slne.surf.surfapi.gradle.core")
 }
 
 repositories {
@@ -7,7 +7,9 @@ repositories {
 }
 
 dependencies {
+    compileOnly(libs.velocity.api)
 
+    api(libs.fast.util)
 }
 
 kotlin {

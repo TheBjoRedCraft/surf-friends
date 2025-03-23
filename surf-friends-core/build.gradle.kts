@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm")
+    id("dev.slne.surf.surfapi.gradle.core")
 }
 
 repositories {
@@ -7,7 +7,7 @@ repositories {
 }
 
 dependencies {
-
+    api(project(":surf-friends-api"))
 }
 
 kotlin {

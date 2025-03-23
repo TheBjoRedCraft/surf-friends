@@ -9,5 +9,19 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven {
+            name = "papermc"
+            url = uri("https://repo.papermc.io/repository/maven-public/")
+        }
+    }
+}
+
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        maven("https://repo.slne.dev/repository/maven-public/") { name = "maven-public" }
+    }
+    dependencies {
+        classpath("dev.slne.surf:surf-api-gradle-plugin:1.21.4+")
     }
 }
