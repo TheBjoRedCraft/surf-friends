@@ -5,8 +5,6 @@ import com.google.auto.service.AutoService
 import com.sksamuel.aedile.core.asLoadingCache
 import com.sksamuel.aedile.core.expireAfterWrite
 import com.sksamuel.aedile.core.withRemovalListener
-import dev.hsbrysk.caffeine.CoroutineLoadingCache
-import dev.hsbrysk.caffeine.buildCoroutine
 import dev.slne.surf.database.DatabaseProvider
 import dev.slne.surf.friends.api.data.FriendData
 import dev.slne.surf.friends.api.user.FriendUser
@@ -39,6 +37,8 @@ class VelocityDatabaseService(): DatabaseService, Fallback {
         }
         .asLoadingCache<UUID, FriendData> { databaseService.loadData(it) }
 
+    var provider = DatabaseProvider(plugin.dataDirectory, plugin.dataDirectory)
+
     object Users : Table() {
         val uuid = text("uuid").transform({ UUID.fromString(it) }, { it.toString() })
         val friends = text("friends").transform( {
@@ -51,6 +51,11 @@ class VelocityDatabaseService(): DatabaseService, Fallback {
         }, {
             SurfFriendsVelocity.gson.toJson(it)
         })
+        val openFriendRequests = text("openFriendRequests").transform( {
+            SurfFriendsVelocity.gson.fromJson(it, ObjectArraySet<FriendUser>().toObjectSet().javaClass)
+        }, {
+            SurfFriendsVelocity.gson.toJson(it)
+        })
 
         val announcements = bool("announcements")
         val announcementSounds = bool("announcementSounds")
@@ -59,7 +64,7 @@ class VelocityDatabaseService(): DatabaseService, Fallback {
     }
 
     override fun connect() {
-        DatabaseProvider(plugin.dataDirectory, plugin.dataDirectory).connect()
+        provider.connect()
 
         transaction {
             SchemaUtils.create(Users)
@@ -75,6 +80,7 @@ class VelocityDatabaseService(): DatabaseService, Fallback {
                     selected[Users.uuid],
                     selected[Users.friends],
                     selected[Users.friendRequests],
+                    selected[Users.openFriendRequests],
                     selected[Users.announcements],
                     selected[Users.announcementSounds]
                 )
@@ -89,6 +95,7 @@ class VelocityDatabaseService(): DatabaseService, Fallback {
                     it[uuid] = data.uuid
                     it[friends] = data.friends
                     it[friendRequests] = data.friendRequests
+                    it[openFriendRequests] = data.openFriendRequests
                     it[announcements] = data.announcements
                     it[announcementSounds] = data.announcementSounds
                 }
@@ -96,11 +103,15 @@ class VelocityDatabaseService(): DatabaseService, Fallback {
         }
     }
 
-    override suspend fun getData(uuid: UUID): FriendData? {
-        return null
+    override suspend fun getData(uuid: UUID): FriendData {
+        return dataCache.get(uuid)
+    }
+
+    override fun updateData(data: FriendData) {
+        dataCache.put(data.uuid, data)
     }
 
     override fun disconnect() {
-
+        provider.disconnect()
     }
 }

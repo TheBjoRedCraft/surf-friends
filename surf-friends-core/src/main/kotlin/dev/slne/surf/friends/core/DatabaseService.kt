@@ -9,9 +9,9 @@ interface DatabaseService {
 
     suspend fun loadData(uuid: UUID): FriendData
     suspend fun saveData(data: FriendData)
+    suspend fun getData(uuid: UUID): FriendData
 
-    suspend fun getData(uuid: UUID): FriendData?
-
+    fun updateData(data: FriendData)
     fun disconnect()
 
     companion object {

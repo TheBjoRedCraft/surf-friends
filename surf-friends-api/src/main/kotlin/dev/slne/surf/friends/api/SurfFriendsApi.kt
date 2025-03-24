@@ -1,6 +1,7 @@
 package dev.slne.surf.friends.api
 
 import dev.slne.surf.friends.api.user.FriendUser
+import it.unimi.dsi.fastutil.objects.ObjectSet
 
 interface SurfFriendsApi {
     /**
@@ -27,6 +28,8 @@ interface SurfFriendsApi {
      */
     suspend fun declineFriendRequest(sender: FriendUser, target: FriendUser)
 
+    suspend fun revokeFriendRequest(player: FriendUser, sender: FriendUser)
+
     /**
      * Adds a friend to the player's friend list.
      *
@@ -47,20 +50,24 @@ interface SurfFriendsApi {
      * Retrieves the list of friends for the specified player.
      *
      * @param player The user whose friends are being retrieved.
+     *
+     * @return The list of friends for the specified player.
      */
-    suspend fun getFriends(player: FriendUser)
+    suspend fun getFriends(player: FriendUser): ObjectSet<FriendUser>
 
     /**
      * Toggles the announcement settings for the specified player.
      *
      * @param player The user toggling announcements.
+     * @return The new announcement setting for the player.
      */
-    suspend fun toggleAnnouncements(player: FriendUser)
+    suspend fun toggleAnnouncements(player: FriendUser): Boolean
 
     /**
      * Toggles the announcement sound settings for the specified player.
      *
      * @param player The user toggling announcement sounds.
+     * @return The new announcement sound setting for the player.
      */
-    suspend fun toggleAnnouncementSounds(player: FriendUser)
+    suspend fun toggleAnnouncementSounds(player: FriendUser): Boolean
 }

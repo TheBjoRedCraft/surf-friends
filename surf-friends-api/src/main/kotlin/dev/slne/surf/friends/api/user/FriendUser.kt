@@ -8,6 +8,7 @@ interface FriendUser {
     suspend fun sendFriendRequest(sender: FriendUser, target: FriendUser)
     suspend fun acceptFriendRequest(sender: FriendUser, target: FriendUser)
     suspend fun declineFriendRequest(sender: FriendUser, target: FriendUser)
+    suspend fun revokeFriendRequest(sender: FriendUser, target: FriendUser)
 
     suspend fun addFriend(player: FriendUser, friend: FriendUser)
     suspend fun removeFriend(player: FriendUser, friend: FriendUser)

@@ -23,6 +23,10 @@ class SurfFriendsApiVelocity(): SurfFriendsApi, Fallback {
         friendService.declineFriendRequest(sender, target)
     }
 
+    override suspend fun revokeFriendRequest(player: FriendUser, sender: FriendUser) {
+        friendService.revokeFriendRequest(player, sender)
+    }
+
     override suspend fun addFriend(player: FriendUser, friend: FriendUser) {
         friendService.addFriend(player, friend)
     }

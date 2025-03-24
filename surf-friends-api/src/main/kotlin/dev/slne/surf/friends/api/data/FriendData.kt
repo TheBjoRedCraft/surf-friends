@@ -6,11 +6,33 @@ import it.unimi.dsi.fastutil.objects.ObjectSet
 import java.util.UUID
 
 data class FriendData (
+    /**
+     * The unique identifier for the user.
+     */
     val uuid: UUID,
 
+    /**
+     * A set of friends associated with the user.
+     */
     val friends: ObjectSet<FriendUser> = mutableObjectSetOf(),
+
+    /**
+     * A set of friend requests received by the user, sent by others.
+     */
     val friendRequests: ObjectSet<FriendUser> = mutableObjectSetOf(),
 
-    val announcements: Boolean = true,
-    val announcementSounds: Boolean = true
+    /**
+     * A set of open friend requests sent by the user.
+     */
+    val openFriendRequests: ObjectSet<FriendUser> = mutableObjectSetOf(),
+
+    /**
+     * Indicates whether the user has enabled announcements.
+     */
+    var announcements: Boolean = true,
+
+    /**
+     * Indicates whether the user has enabled announcement sounds.
+     */
+    var announcementSounds: Boolean = true
 )
