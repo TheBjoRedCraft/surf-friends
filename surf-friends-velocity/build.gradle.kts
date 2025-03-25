@@ -1,6 +1,7 @@
 plugins {
     kotlin("kapt")
     id("dev.slne.surf.surfapi.gradle.velocity")
+    `maven-publish`
 }
 
 repositories {
@@ -9,6 +10,10 @@ repositories {
         name = "papermc"
         url = uri("https://repo.papermc.io/repository/maven-public/")
     }
+
+    maven {
+        url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots")
+    }
 }
 
 dependencies {
@@ -16,6 +21,7 @@ dependencies {
     compileOnly(libs.surf.database)
 
     implementation(libs.caffeine.coroutines)
+    implementation(libs.commandapi.velocity)
 
     api(project(":surf-friends-core"))
 }

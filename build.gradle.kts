@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "2.1.10"
     kotlin("kapt") version "2.1.10" apply false
+    `maven-publish`
 }
 
 allprojects {

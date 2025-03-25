@@ -4,10 +4,15 @@ import com.github.shynixn.mccoroutine.velocity.SuspendingPluginContainer
 
 import com.google.gson.Gson
 import com.google.inject.Inject
+import com.velocitypowered.api.event.Subscribe
+import com.velocitypowered.api.event.proxy.ProxyInitializeEvent
+import com.velocitypowered.api.event.proxy.ProxyShutdownEvent
 
 import com.velocitypowered.api.plugin.Plugin
 import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.ProxyServer
+import dev.jorel.commandapi.CommandAPI
+import dev.jorel.commandapi.CommandAPIVelocityConfig
 
 import org.slf4j.Logger
 import java.nio.file.Path
@@ -30,6 +35,18 @@ constructor (
     init {
         suspendingPluginContainer.initialize(this)
         INSTANCE = this
+
+        CommandAPI.onLoad(CommandAPIVelocityConfig(proxy, this))
+    }
+
+    @Subscribe
+    fun onProxyInitialization(event: ProxyInitializeEvent) {
+        CommandAPI.onEnable()
+    }
+
+    @Subscribe
+    fun onProxyShutdown(event: ProxyShutdownEvent) {
+        CommandAPI.onDisable()
     }
 
     companion object {

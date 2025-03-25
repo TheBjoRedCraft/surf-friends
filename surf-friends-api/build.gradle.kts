@@ -1,5 +1,6 @@
 plugins {
     id("dev.slne.surf.surfapi.gradle.core")
+    `maven-publish`
 }
 
 repositories {
