@@ -55,5 +55,6 @@ constructor (
     }
 }
 
+val container get() = plugin.proxy.pluginManager.getPlugin("surf-friends").get()
 val plugin get() = SurfFriendsVelocity.INSTANCE
 val gson get() = SurfFriendsVelocity.gson
