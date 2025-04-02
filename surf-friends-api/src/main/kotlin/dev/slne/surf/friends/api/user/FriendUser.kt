@@ -1,19 +1,20 @@
 package dev.slne.surf.friends.api.user
 
 import dev.slne.surf.friends.api.data.FriendData
+import it.unimi.dsi.fastutil.objects.ObjectSet
 
 interface FriendUser {
     val friendData: FriendData
 
-    suspend fun sendFriendRequest(sender: FriendUser, target: FriendUser)
-    suspend fun acceptFriendRequest(sender: FriendUser, target: FriendUser)
-    suspend fun declineFriendRequest(sender: FriendUser, target: FriendUser)
-    suspend fun revokeFriendRequest(sender: FriendUser, target: FriendUser)
+    suspend fun sendFriendRequest(target: FriendUser)
+    suspend fun acceptFriendRequest(target: FriendUser)
+    suspend fun declineFriendRequest(target: FriendUser)
+    suspend fun revokeFriendRequest(target: FriendUser)
 
-    suspend fun addFriend(player: FriendUser, friend: FriendUser)
-    suspend fun removeFriend(player: FriendUser, friend: FriendUser)
-    suspend fun getFriends(player: FriendUser)
+    suspend fun addFriend(friend: FriendUser)
+    suspend fun removeFriend(friend: FriendUser)
+    suspend fun getFriends(): ObjectSet<FriendUser>
 
-    suspend fun toggleAnnouncements(player: FriendUser)
-    suspend fun toggleAnnouncementSounds(player: FriendUser)
+    suspend fun toggleAnnouncements(): Boolean
+    suspend fun toggleAnnouncementSounds(): Boolean
 }
