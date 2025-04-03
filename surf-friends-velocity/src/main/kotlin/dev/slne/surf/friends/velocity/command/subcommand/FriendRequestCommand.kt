@@ -20,7 +20,7 @@ class FriendRequestCommand(commandName: String): CommandAPICommand(commandName) 
             val friend: Deferred<FriendUser> by args
 
             container.launch {
-                player.toFriendUser().addFriend(friend.await())
+                player.toFriendUser().sendFriendRequest(friend.await())
             }
         }
     }
