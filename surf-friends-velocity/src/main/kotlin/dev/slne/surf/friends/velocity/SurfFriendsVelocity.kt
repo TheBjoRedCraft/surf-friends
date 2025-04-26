@@ -22,7 +22,7 @@ import java.nio.file.Path
     name = "SurfFriends",
     version = "6.0.0-SNAPSHOT",
     description = "Surf Friend System",
-    authors = ["SLNE Development"]
+    authors = ["red"]
 )
 class SurfFriendsVelocity
 @Inject
