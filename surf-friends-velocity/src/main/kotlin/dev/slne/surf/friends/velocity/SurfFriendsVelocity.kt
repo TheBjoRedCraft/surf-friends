@@ -13,6 +13,7 @@ import com.velocitypowered.api.plugin.annotation.DataDirectory
 import com.velocitypowered.api.proxy.ProxyServer
 import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPIVelocityConfig
+import dev.slne.surf.friends.velocity.command.FriendCommand
 
 import org.slf4j.Logger
 import java.nio.file.Path
@@ -42,6 +43,8 @@ constructor (
     @Subscribe
     fun onProxyInitialization(event: ProxyInitializeEvent) {
         CommandAPI.onEnable()
+
+        FriendCommand("friend").register()
     }
 
     @Subscribe
