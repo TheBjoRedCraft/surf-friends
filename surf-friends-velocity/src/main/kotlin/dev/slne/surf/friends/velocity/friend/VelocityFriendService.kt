@@ -4,6 +4,7 @@ import com.google.auto.service.AutoService
 import dev.slne.surf.friends.api.user.FriendUser
 import dev.slne.surf.friends.core.FriendService
 import dev.slne.surf.friends.core.databaseService
+import dev.slne.surf.friends.velocity.database.user
 import dev.slne.surf.friends.velocity.util.edit
 import dev.slne.surf.friends.velocity.util.sendText
 import dev.slne.surf.surfapi.core.api.messages.adventure.buildText
@@ -13,42 +14,35 @@ import net.kyori.adventure.util.Services.Fallback
 @AutoService(FriendService::class)
 class VelocityFriendService(): FriendService, Fallback {
     override suspend fun sendFriendRequest(sender: FriendUser, target: FriendUser) {
-        val targetData = databaseService.getData(target.friendData.uuid);
-        val senderData = databaseService.getData(sender.friendData.uuid);
+        val targetData = target.friendData
+        val senderData = sender.friendData
 
-        if (targetData.friendRequests.contains(sender)) {
-            senderData.sendText(buildText {
-                primary("Du hast ")
-                secondary("eine Freundschaftsanfrage")
-                primary(" an ")
-                secondary("")//TODO
-                primary(" gesendet.")
-            })
+        if (targetData.friendRequests.contains(senderData.uuid)) {
             //TODO: Send message to sender that they have already sent a friend request to the target
             return
         }
 
-        if(senderData.friendRequests.contains(target)) {
+        if(senderData.friendRequests.contains(targetData.uuid)) {
             //TODO: Send message to sender that they have already received a friend request from the target
             return
         }
 
-        if(senderData.friends.contains(target)) {
+        if(senderData.friends.contains(targetData.uuid)) {
             //TODO: Send message to sender that they are already friends with the target
             return
         }
 
-        if(targetData.friends.contains(sender)) {
+        if(targetData.friends.contains(senderData.uuid)) {
             //TODO: Send message to sender that they are already friends with the target
             return
         }
 
         targetData.edit {
-            friendRequests.add(sender)
+            friendRequests.add(senderData.uuid)
         }
 
         senderData.edit {
-            openFriendRequests.add(target)
+            openFriendRequests.add(targetData.uuid)
         }
         //TODO: Send message to target that they have received a friend request from the sender
     }
