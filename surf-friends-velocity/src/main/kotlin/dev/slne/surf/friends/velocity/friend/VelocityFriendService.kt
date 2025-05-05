@@ -5,6 +5,8 @@ import dev.slne.surf.friends.api.user.FriendUser
 import dev.slne.surf.friends.core.FriendService
 import dev.slne.surf.friends.core.databaseService
 import dev.slne.surf.friends.velocity.util.edit
+import dev.slne.surf.friends.velocity.util.sendText
+import dev.slne.surf.surfapi.core.api.messages.adventure.buildText
 import it.unimi.dsi.fastutil.objects.ObjectSet
 import net.kyori.adventure.util.Services.Fallback
 
@@ -15,6 +17,13 @@ class VelocityFriendService(): FriendService, Fallback {
         val senderData = databaseService.getData(sender.friendData.uuid);
 
         if (targetData.friendRequests.contains(sender)) {
+            senderData.sendText(buildText {
+                primary("Du hast ")
+                secondary("eine Freundschaftsanfrage")
+                primary(" an ")
+                secondary("")//TODO
+                primary(" gesendet.")
+            })
             //TODO: Send message to sender that they have already sent a friend request to the target
             return
         }

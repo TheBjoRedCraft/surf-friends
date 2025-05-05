@@ -1,27 +1,33 @@
 package dev.slne.surf.friends.velocity.util
 
-import com.velocitypowered.api.proxy.Player
 import dev.slne.surf.friends.api.data.FriendData
 import dev.slne.surf.friends.api.user.FriendUser
 import dev.slne.surf.friends.core.databaseService
+import dev.slne.surf.friends.velocity.plugin
 import dev.slne.surf.friends.velocity.user.VelocityFriendUser
+import dev.slne.surf.surfapi.core.api.messages.adventure.buildText
 
-import dev.thebjoredcraft.offlinevelocity.api.offlineVelocityApi
+import net.kyori.adventure.text.Component
 
 fun FriendData.edit(block: FriendData.() -> Unit) {
     this.block()
     databaseService.updateData(this)
 }
 
-fun FriendData.toFriendUser(): FriendUser {
+fun FriendData.user(): FriendUser {
     return VelocityFriendUser(this)
 }
 
-suspend fun Player.toFriendUser(): FriendUser {
-    return databaseService.getData(this.uniqueId).toFriendUser()
-}
 
-suspend fun String.toFriendUser(): FriendUser? {
-    val targetUser = offlineVelocityApi.getUser(this) ?: return null
-    return databaseService.getData(targetUser.uuid).toFriendUser()
+fun FriendData.sendText(text: Component) {
+    val player = plugin.proxy.getPlayer(this.uuid)
+
+    if(player.isEmpty) {
+        return
+    }
+
+    player.get().sendMessage(buildText {
+        appendPrefix()
+        append(text)
+    })
 }

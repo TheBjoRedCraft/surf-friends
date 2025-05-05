@@ -19,7 +19,6 @@ repositories {
 dependencies {
     compileOnly(libs.velocity.api)
     compileOnly(libs.surf.database)
-    compileOnly(files("libs/offline-velocity-api-2.0.0-all.jar"))
 
     implementation(libs.caffeine.coroutines)
     implementation(libs.commandapi.velocity)
