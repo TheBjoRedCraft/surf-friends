@@ -54,17 +54,17 @@ class VelocityDatabaseService(): DatabaseService, Fallback {
         val uuid = text("uuid").transform({ UUID.fromString(it) }, { it.toString() })
         val username = text("name")
         val friends = text("friends").transform( {
-            SurfFriendsVelocity.gson.fromJson(it, ObjectArraySet<FriendUser>().toObjectSet().javaClass)
+            SurfFriendsVelocity.gson.fromJson(it, ObjectArraySet<UUID>().toObjectSet().javaClass)
         }, {
             SurfFriendsVelocity.gson.toJson(it)
         })
         val friendRequests = text("friendRequests").transform( {
-            SurfFriendsVelocity.gson.fromJson(it, ObjectArraySet<FriendUser>().toObjectSet().javaClass)
+            SurfFriendsVelocity.gson.fromJson(it, ObjectArraySet<UUID>().toObjectSet().javaClass)
         }, {
             SurfFriendsVelocity.gson.toJson(it)
         })
         val openFriendRequests = text("openFriendRequests").transform( {
-            SurfFriendsVelocity.gson.fromJson(it, ObjectArraySet<FriendUser>().toObjectSet().javaClass)
+            SurfFriendsVelocity.gson.fromJson(it, ObjectArraySet<UUID>().toObjectSet().javaClass)
         }, {
             SurfFriendsVelocity.gson.toJson(it)
         })
