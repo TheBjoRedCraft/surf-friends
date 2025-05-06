@@ -2,6 +2,7 @@ package dev.slne.surf.friends.api
 
 import dev.slne.surf.friends.api.user.FriendUser
 import it.unimi.dsi.fastutil.objects.ObjectSet
+import java.util.UUID
 
 interface SurfFriendsApi {
     /**
@@ -53,7 +54,7 @@ interface SurfFriendsApi {
      *
      * @return The list of friends for the specified player.
      */
-    suspend fun getFriends(player: FriendUser): ObjectSet<FriendUser>
+    suspend fun getFriends(player: FriendUser): ObjectSet<UUID>
 
     /**
      * Toggles the announcement settings for the specified player.

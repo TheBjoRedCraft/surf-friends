@@ -8,6 +8,7 @@ import dev.slne.surf.friends.core.friendService
 import it.unimi.dsi.fastutil.objects.ObjectSet
 
 import net.kyori.adventure.util.Services.Fallback
+import java.util.UUID
 
 @AutoService(SurfFriendsApi::class)
 class SurfFriendsApiVelocity(): SurfFriendsApi, Fallback {
@@ -35,7 +36,7 @@ class SurfFriendsApiVelocity(): SurfFriendsApi, Fallback {
         friendService.breakFriendShip(player, friend)
     }
 
-    override suspend fun getFriends(player: FriendUser): ObjectSet<FriendUser> {
+    override suspend fun getFriends(player: FriendUser): ObjectSet<UUID> {
         return friendService.getFriends(player)
     }
 

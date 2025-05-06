@@ -4,6 +4,7 @@ import dev.slne.surf.friends.api.data.FriendData
 import dev.slne.surf.friends.api.user.FriendUser
 import dev.slne.surf.friends.core.friendService
 import it.unimi.dsi.fastutil.objects.ObjectSet
+import java.util.UUID
 
 class VelocityFriendUser(override val friendData: FriendData): FriendUser {
     override suspend fun sendFriendRequest(target: FriendUser) {
@@ -30,7 +31,7 @@ class VelocityFriendUser(override val friendData: FriendData): FriendUser {
         friendService.breakFriendShip(this, friend)
     }
 
-    override suspend fun getFriends(): ObjectSet<FriendUser> {
+    override suspend fun getFriends(): ObjectSet<UUID> {
         return friendService.getFriends(this)
     }
 
