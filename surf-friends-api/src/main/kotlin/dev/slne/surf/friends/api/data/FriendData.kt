@@ -19,17 +19,17 @@ data class FriendData (
     /**
      * A set of friends associated with the user.
      */
-    val friends: ObjectSet<UUID> = mutableObjectSetOf(),
+    val friends: ObjectSet<FriendUser> = mutableObjectSetOf(),
 
     /**
      * A set of friend requests received by the user, sent by others.
      */
-    val friendRequests: ObjectSet<UUID> = mutableObjectSetOf(),
+    val friendRequests: ObjectSet<FriendUser> = mutableObjectSetOf(),
 
     /**
      * A set of open friend requests sent by the user.
      */
-    val openFriendRequests: ObjectSet<UUID> = mutableObjectSetOf(),
+    val openFriendRequests: ObjectSet<FriendUser> = mutableObjectSetOf(),
 
     /**
      * Indicates whether the user has enabled announcements.

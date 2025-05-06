@@ -14,7 +14,7 @@ interface FriendUser {
 
     suspend fun addFriend(friend: FriendUser)
     suspend fun removeFriend(friend: FriendUser)
-    suspend fun getFriends(): ObjectSet<UUID>
+    suspend fun getFriends(): ObjectSet<FriendUser>
 
     suspend fun toggleAnnouncements(): Boolean
     suspend fun toggleAnnouncementSounds(): Boolean

@@ -13,7 +13,7 @@ interface FriendService {
 
     suspend fun createFriendShip(player: FriendUser, target: FriendUser)
     suspend fun breakFriendShip(player: FriendUser, friend: FriendUser)
-    suspend fun getFriends(player: FriendUser): ObjectSet<UUID>
+    suspend fun getFriends(player: FriendUser): ObjectSet<FriendUser>
 
     suspend fun toggleAnnouncements(player: FriendUser): Boolean
     suspend fun toggleAnnouncementSounds(player: FriendUser): Boolean

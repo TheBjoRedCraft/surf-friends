@@ -17,28 +17,28 @@ class VelocityFriendService(): FriendService, Fallback {
         val targetData = target.friendData
         val senderData = sender.friendData
 
-        if (targetData.friendRequests.contains(senderData.uuid)) {
+        if (targetData.friendRequests.contains(sender)) {
             sender.sendText(buildText {
                 error("Du hast bereits eine Freundschaftsanfrage an diesen Spieler gesendet.")
             })
             return
         }
 
-        if(senderData.friendRequests.contains(targetData.uuid)) {
+        if(senderData.friendRequests.contains(target)) {
             sender.sendText(buildText {
                 error("Du hast bereits eine Freundschaftsanfrage von diesem Spieler erhalten.")
             })
             return
         }
 
-        if(senderData.friends.contains(targetData.uuid)) {
+        if(senderData.friends.contains(target)) {
             sender.sendText(buildText {
                 error("Du bist bereits mit diesem Spieler befreundet.")
             })
             return
         }
 
-        if(targetData.friends.contains(senderData.uuid)) {
+        if(targetData.friends.contains(sender)) {
             sender.sendText(buildText {
                 error("Dieser Spieler ist bereits dein Freund.")
             })
@@ -46,11 +46,11 @@ class VelocityFriendService(): FriendService, Fallback {
         }
 
         targetData.edit {
-            friendRequests.add(senderData.uuid)
+            friendRequests.add(sender)
         }
 
         senderData.edit {
-            openFriendRequests.add(targetData.uuid)
+            openFriendRequests.add(target)
         }
         sender.sendText(buildText {
             primary("Du hast ")
@@ -64,14 +64,14 @@ class VelocityFriendService(): FriendService, Fallback {
         val targetData = target.friendData
         val senderData = sender.friendData
 
-        if(!targetData.friendRequests.contains(senderData.uuid)) {
+        if(!targetData.friendRequests.contains(sender)) {
             sender.sendText(buildText {
                 error("Du hast keine Freundschaftsanfrage von diesem Spieler erhalten.")
             })
             return
         }
 
-        if(senderData.friends.contains(targetData.uuid)) {
+        if(senderData.friends.contains(target)) {
             sender.sendText(buildText {
                 error("Du bist bereits mit diesem Spieler befreundet.")
             })
@@ -79,12 +79,12 @@ class VelocityFriendService(): FriendService, Fallback {
         }
 
         targetData.edit {
-            friendRequests.remove(senderData.uuid)
-            friends.add(senderData.uuid)
+            friendRequests.remove(sender)
+            friends.add(sender)
         }
 
         senderData.edit {
-            openFriendRequests.remove(targetData.uuid)
+            openFriendRequests.remove(target)
         }
 
         sender.sendText(buildText {
@@ -99,7 +99,7 @@ class VelocityFriendService(): FriendService, Fallback {
         val targetData = target.friendData
         val senderData = sender.friendData
 
-        if(!targetData.friendRequests.contains(senderData.uuid)) {
+        if(!targetData.friendRequests.contains(sender)) {
             sender.sendText(buildText {
                 error("Du hast keine Freundschaftsanfrage von diesem Spieler erhalten.")
             })
@@ -107,11 +107,11 @@ class VelocityFriendService(): FriendService, Fallback {
         }
 
         targetData.edit {
-            friendRequests.remove(senderData.uuid)
+            friendRequests.remove(sender)
         }
 
         senderData.edit {
-            openFriendRequests.remove(targetData.uuid)
+            openFriendRequests.remove(target)
         }
 
         sender.sendText(buildText {
@@ -126,7 +126,7 @@ class VelocityFriendService(): FriendService, Fallback {
         val targetData = target.friendData
         val senderData = sender.friendData
 
-        if(!senderData.openFriendRequests.contains(targetData.uuid)) {
+        if(!senderData.openFriendRequests.contains(target)) {
             sender.sendText(buildText {
                 error("Du hast keine Freundschaftsanfrage an diesen Spieler gesendet.")
             })
@@ -134,11 +134,11 @@ class VelocityFriendService(): FriendService, Fallback {
         }
 
         senderData.edit {
-            openFriendRequests.remove(targetData.uuid)
+            openFriendRequests.remove(target)
         }
 
         targetData.edit {
-            friendRequests.remove(senderData.uuid)
+            friendRequests.remove(sender)
         }
 
         sender.sendText(buildText {
@@ -153,14 +153,14 @@ class VelocityFriendService(): FriendService, Fallback {
         val targetData = target.friendData
         val playerData = player.friendData
 
-        if(playerData.friends.contains(targetData.uuid)) {
+        if(playerData.friends.contains(target)) {
             player.sendText(buildText {
                 error("Du bist bereits mit diesem Spieler befreundet.")
             })
             return
         }
 
-        if(targetData.friends.contains(playerData.uuid)) {
+        if(targetData.friends.contains(player)) {
             player.sendText(buildText {
                 error("Dieser Spieler ist bereits dein Freund.")
             })
@@ -168,11 +168,11 @@ class VelocityFriendService(): FriendService, Fallback {
         }
 
         playerData.edit {
-            friends.add(targetData.uuid)
+            friends.add(target)
         }
 
         targetData.edit {
-            friends.add(playerData.uuid)
+            friends.add(player)
         }
     }
 
@@ -180,7 +180,7 @@ class VelocityFriendService(): FriendService, Fallback {
         val targetData = friend.friendData
         val playerData = player.friendData
 
-        if(!playerData.friends.contains(targetData.uuid)) {
+        if(!playerData.friends.contains(friend)) {
             player.sendText(buildText {
                 error("Du bist nicht mit diesem Spieler befreundet.")
             })
@@ -188,11 +188,11 @@ class VelocityFriendService(): FriendService, Fallback {
         }
 
         playerData.edit {
-            friends.remove(targetData.uuid)
+            friends.remove(friend)
         }
 
         targetData.edit {
-            friends.remove(playerData.uuid)
+            friends.remove(player)
         }
 
         player.sendText(buildText {
@@ -203,7 +203,7 @@ class VelocityFriendService(): FriendService, Fallback {
         })
     }
 
-    override suspend fun getFriends(player: FriendUser): ObjectSet<UUID> = player.friendData.friends
+    override suspend fun getFriends(player: FriendUser): ObjectSet<FriendUser> = player.friendData.friends
 
     override suspend fun toggleAnnouncements(player: FriendUser): Boolean {
         val playerData = player.friendData
