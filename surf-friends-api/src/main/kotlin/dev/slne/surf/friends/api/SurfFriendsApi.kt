@@ -31,12 +31,12 @@ interface SurfFriendsApi {
     suspend fun revokeFriendRequest(player: FriendUser, sender: FriendUser)
 
     /**
-     * Adds a friend to the player's friend list.
+     * Creates a friendship between the player and the friend.
      *
      * @param player The user adding a friend.
      * @param friend The user being added as a friend.
      */
-    suspend fun addFriend(player: FriendUser, friend: FriendUser)
+    suspend fun createFriendShip(player: FriendUser, friend: FriendUser)
 
     /**
      * Removes a friend from the player's friend list.

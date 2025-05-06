@@ -4,12 +4,12 @@ import com.google.auto.service.AutoService
 import dev.slne.surf.friends.api.user.FriendUser
 import dev.slne.surf.friends.core.FriendService
 import dev.slne.surf.friends.core.databaseService
-import dev.slne.surf.friends.velocity.database.user
 import dev.slne.surf.friends.velocity.util.edit
 import dev.slne.surf.friends.velocity.util.sendText
 import dev.slne.surf.surfapi.core.api.messages.adventure.buildText
 import it.unimi.dsi.fastutil.objects.ObjectSet
 import net.kyori.adventure.util.Services.Fallback
+import java.util.UUID
 
 @AutoService(FriendService::class)
 class VelocityFriendService(): FriendService, Fallback {
@@ -18,22 +18,30 @@ class VelocityFriendService(): FriendService, Fallback {
         val senderData = sender.friendData
 
         if (targetData.friendRequests.contains(senderData.uuid)) {
-            //TODO: Send message to sender that they have already sent a friend request to the target
+            sender.sendText(buildText {
+                error("Du hast bereits eine Freundschaftsanfrage an diesen Spieler gesendet.")
+            })
             return
         }
 
         if(senderData.friendRequests.contains(targetData.uuid)) {
-            //TODO: Send message to sender that they have already received a friend request from the target
+            sender.sendText(buildText {
+                error("Du hast bereits eine Freundschaftsanfrage von diesem Spieler erhalten.")
+            })
             return
         }
 
         if(senderData.friends.contains(targetData.uuid)) {
-            //TODO: Send message to sender that they are already friends with the target
+            sender.sendText(buildText {
+                error("Du bist bereits mit diesem Spieler befreundet.")
+            })
             return
         }
 
         if(targetData.friends.contains(senderData.uuid)) {
-            //TODO: Send message to sender that they are already friends with the target
+            sender.sendText(buildText {
+                error("Dieser Spieler ist bereits dein Freund.")
+            })
             return
         }
 
@@ -44,114 +52,161 @@ class VelocityFriendService(): FriendService, Fallback {
         senderData.edit {
             openFriendRequests.add(targetData.uuid)
         }
-        //TODO: Send message to target that they have received a friend request from the sender
+        sender.sendText(buildText {
+            primary("Du hast ")
+            secondary("eine Freundschaftsanfrage")
+            primary(" an ${targetData.username}")
+            secondary(" gesendet.")
+        })
     }
 
     override suspend fun acceptFriendRequest(sender: FriendUser, target: FriendUser) {
-        val targetData = databaseService.getData(target.friendData.uuid);
-        val senderData = databaseService.getData(sender.friendData.uuid);
+        val targetData = target.friendData
+        val senderData = sender.friendData
 
-        if(!targetData.friendRequests.contains(sender)) {
-            //TODO: Send message to target that they have not received a friend request from the sender
+        if(!targetData.friendRequests.contains(senderData.uuid)) {
+            sender.sendText(buildText {
+                error("Du hast keine Freundschaftsanfrage von diesem Spieler erhalten.")
+            })
             return
         }
 
-        if(senderData.friends.contains(target)) {
-            //TODO: Send message to sender that they are already friends with the target
+        if(senderData.friends.contains(targetData.uuid)) {
+            sender.sendText(buildText {
+                error("Du bist bereits mit diesem Spieler befreundet.")
+            })
             return
         }
 
         targetData.edit {
-            friendRequests.remove(sender)
-            friends.add(sender)
+            friendRequests.remove(senderData.uuid)
+            friends.add(senderData.uuid)
         }
 
         senderData.edit {
-            openFriendRequests.remove(target)
+            openFriendRequests.remove(targetData.uuid)
         }
+
+        sender.sendText(buildText {
+            primary("Du hast ")
+            secondary("die Freundschaftsanfrage")
+            primary(" von ${targetData.username}")
+            secondary(" angenommen.")
+        })
     }
 
     override suspend fun declineFriendRequest(sender: FriendUser, target: FriendUser) {
-        val targetData = databaseService.getData(target.friendData.uuid);
-        val senderData = databaseService.getData(sender.friendData.uuid);
+        val targetData = target.friendData
+        val senderData = sender.friendData
 
-        if(!targetData.friendRequests.contains(sender)) {
-            //TODO: Send message to target that they have not received a friend request from the sender
+        if(!targetData.friendRequests.contains(senderData.uuid)) {
+            sender.sendText(buildText {
+                error("Du hast keine Freundschaftsanfrage von diesem Spieler erhalten.")
+            })
             return
         }
 
         targetData.edit {
-            friendRequests.remove(sender)
+            friendRequests.remove(senderData.uuid)
         }
 
         senderData.edit {
-            openFriendRequests.remove(target)
+            openFriendRequests.remove(targetData.uuid)
         }
+
+        sender.sendText(buildText {
+            primary("Du hast ")
+            secondary("die Freundschaftsanfrage")
+            primary(" von ${targetData.username}")
+            secondary(" abgelehnt.")
+        })
     }
 
-    override suspend fun revokeFriendRequest(player: FriendUser, sender: FriendUser) {
-        val playerData = databaseService.getData(player.friendData.uuid);
-        val senderData = databaseService.getData(sender.friendData.uuid);
+    override suspend fun revokeFriendRequest(sender: FriendUser, target: FriendUser) {
+        val targetData = target.friendData
+        val senderData = sender.friendData
 
-        if(!playerData.openFriendRequests.contains(sender)) {
-            //TODO: Send message to player that they have not received a friend request from the sender
+        if(!senderData.openFriendRequests.contains(targetData.uuid)) {
+            sender.sendText(buildText {
+                error("Du hast keine Freundschaftsanfrage an diesen Spieler gesendet.")
+            })
             return
-        }
-
-        playerData.edit {
-            openFriendRequests.remove(sender)
         }
 
         senderData.edit {
-            friendRequests.remove(player)
+            openFriendRequests.remove(targetData.uuid)
         }
+
+        targetData.edit {
+            friendRequests.remove(senderData.uuid)
+        }
+
+        sender.sendText(buildText {
+            primary("Du hast ")
+            secondary("die Freundschaftsanfrage")
+            primary(" an ${targetData.username}")
+            secondary(" zurückgezogen.")
+        })
     }
 
-    override suspend fun addFriend(player: FriendUser, friend: FriendUser) {
-        val playerData = databaseService.getData(player.friendData.uuid);
-        val friendData = databaseService.getData(friend.friendData.uuid);
+    override suspend fun createFriendShip(player: FriendUser, target: FriendUser) {
+        val targetData = target.friendData
+        val playerData = player.friendData
 
-        if(playerData.friends.contains(friend)) {
-            //TODO: Send message to player that they are already friends with the target
+        if(playerData.friends.contains(targetData.uuid)) {
+            player.sendText(buildText {
+                error("Du bist bereits mit diesem Spieler befreundet.")
+            })
             return
         }
 
-        if(friendData.friends.contains(player)) {
-            //TODO: Send message to player that they are already friends with the target
+        if(targetData.friends.contains(playerData.uuid)) {
+            player.sendText(buildText {
+                error("Dieser Spieler ist bereits dein Freund.")
+            })
             return
         }
 
         playerData.edit {
-            friends.add(friend)
+            friends.add(targetData.uuid)
+        }
+
+        targetData.edit {
+            friends.add(playerData.uuid)
         }
     }
 
-    override suspend fun removeFriend(player: FriendUser, friend: FriendUser) {
-        val playerData = databaseService.getData(player.friendData.uuid);
-        val friendData = databaseService.getData(friend.friendData.uuid);
+    override suspend fun breakFriendShip(player: FriendUser, friend: FriendUser) {
+        val targetData = friend.friendData
+        val playerData = player.friendData
 
-        if(!playerData.friends.contains(friend)) {
-            //TODO: Send message to player that they are not friends with the target
+        if(!playerData.friends.contains(targetData.uuid)) {
+            player.sendText(buildText {
+                error("Du bist nicht mit diesem Spieler befreundet.")
+            })
             return
         }
 
         playerData.edit {
-            friends.remove(friend)
+            friends.remove(targetData.uuid)
         }
 
-        friendData.edit {
-            friends.remove(player)
+        targetData.edit {
+            friends.remove(playerData.uuid)
         }
+
+        player.sendText(buildText {
+            primary("Du hast ")
+            secondary("die Freundschaft")
+            primary(" mit ${targetData.username}")
+            secondary(" beendet.")
+        })
     }
 
-    override suspend fun getFriends(player: FriendUser): ObjectSet<FriendUser> {
-        val playerData = databaseService.getData(player.friendData.uuid);
-
-        return playerData.friends
-    }
+    override suspend fun getFriends(player: FriendUser): ObjectSet<UUID> = player.friendData.friends
 
     override suspend fun toggleAnnouncements(player: FriendUser): Boolean {
-        val playerData = databaseService.getData(player.friendData.uuid);
+        val playerData = player.friendData
 
         playerData.edit {
             announcements = !announcements
@@ -161,7 +216,7 @@ class VelocityFriendService(): FriendService, Fallback {
     }
 
     override suspend fun toggleAnnouncementSounds(player: FriendUser): Boolean {
-        val playerData = databaseService.getData(player.friendData.uuid);
+        val playerData = player.friendData
 
         playerData.edit {
             announcementSounds = !announcementSounds

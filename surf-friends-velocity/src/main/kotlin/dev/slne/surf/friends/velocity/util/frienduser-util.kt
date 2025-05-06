@@ -31,3 +31,7 @@ fun FriendData.sendText(text: Component) {
         append(text)
     })
 }
+
+fun FriendUser.sendText(text: Component) {
+    this.friendData.sendText(text)
+}

@@ -23,11 +23,11 @@ class VelocityFriendUser(override val friendData: FriendData): FriendUser {
     }
 
     override suspend fun addFriend(friend: FriendUser) {
-        friendService.addFriend(this, friend)
+        friendService.createFriendShip(this, friend)
     }
 
     override suspend fun removeFriend(friend: FriendUser) {
-        friendService.removeFriend(this, friend)
+        friendService.breakFriendShip(this, friend)
     }
 
     override suspend fun getFriends(): ObjectSet<FriendUser> {
