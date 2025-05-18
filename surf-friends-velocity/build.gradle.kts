@@ -22,8 +22,6 @@ dependencies {
 
     implementation(libs.caffeine.coroutines)
     implementation(libs.commandapi.velocity)
-
-    api(project(":surf-friends-core"))
 }
 
 kotlin {

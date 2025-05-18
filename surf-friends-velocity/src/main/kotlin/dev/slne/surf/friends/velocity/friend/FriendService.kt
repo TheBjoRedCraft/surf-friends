@@ -3,16 +3,14 @@ package dev.slne.surf.friends.velocity.friend
 import com.google.auto.service.AutoService
 import dev.slne.surf.friends.api.user.FriendUser
 import dev.slne.surf.friends.core.FriendService
-import dev.slne.surf.friends.core.databaseService
 import dev.slne.surf.friends.velocity.util.edit
 import dev.slne.surf.friends.velocity.util.sendText
 import dev.slne.surf.surfapi.core.api.messages.adventure.buildText
 import it.unimi.dsi.fastutil.objects.ObjectSet
 import net.kyori.adventure.util.Services.Fallback
-import java.util.UUID
 
 @AutoService(FriendService::class)
-class VelocityFriendService(): FriendService, Fallback {
+class FriendService(): FriendService, Fallback {
     override suspend fun sendFriendRequest(sender: FriendUser, target: FriendUser) {
         val targetData = target.friendData
         val senderData = sender.friendData

@@ -1,11 +1,15 @@
-package dev.slne.surf.friends.api
+package dev.slne.surf.friends.core.service
 
 import dev.slne.surf.friends.api.model.FriendRequest
 import dev.slne.surf.friends.api.model.FriendShip
+import dev.slne.surf.surfapi.core.api.util.requiredService
 import it.unimi.dsi.fastutil.objects.ObjectSet
 import java.util.UUID
 
-interface SurfFriendsApi {
+/**
+ * Service interface for managing friendships and related actions.
+ */
+interface FriendService {
     /**
      * Creates a friendship between two users.
      *
@@ -22,6 +26,8 @@ interface SurfFriendsApi {
      * @param friend The UUID of the friend.
      */
     suspend fun removeFriendShip(uuid: UUID, friend: UUID)
+
+    suspend fun getFriendShip(uuid: UUID, friend: UUID): FriendShip?
 
     /**
      * Retrieves all friendships of a user.
@@ -96,11 +102,12 @@ interface SurfFriendsApi {
      */
     suspend fun toggleSounds(uuid: UUID): Boolean
 
-    /**
-     * Retrieves the friend user object for a given UUID.
-     *
-     * @param uuid The UUID of the user.
-     * @return The FriendUser object representing the user.
-     */
-    suspend fun areFriends(uuid: UUID, friend: UUID): FriendShip
+    companion object {
+        val INSTANCE = requiredService<FriendService>()
+    }
 }
+
+/**
+ * Extension function to get the friend service instance.
+ */
+val friendService get() = FriendService.INSTANCE
