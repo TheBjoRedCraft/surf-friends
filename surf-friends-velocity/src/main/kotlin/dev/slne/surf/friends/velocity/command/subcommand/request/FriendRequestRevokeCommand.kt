@@ -1,4 +1,4 @@
-package dev.slne.surf.friends.velocity.command.subcommand
+package dev.slne.surf.friends.velocity.command.subcommand.request
 
 import com.github.shynixn.mccoroutine.velocity.launch
 
@@ -34,6 +34,18 @@ class FriendRequestRevokeCommand(commandName: String): CommandAPICommand(command
                 }
 
                 friendService.revokeFriendRequest(player.uniqueId, targetUuid)
+
+                player.uniqueId.sendText {
+                    success("Du hast die Freundschaftsanfrage an ")
+                    variableValue(target)
+                    success(" zurückgezogen.")
+                }
+
+                targetUuid.sendText {
+                    info("Die Freundschaftsanfrage von ")
+                    variableValue(player.username)
+                    info(" wurde zurückgezogen.")
+                }
             }
         }
     }

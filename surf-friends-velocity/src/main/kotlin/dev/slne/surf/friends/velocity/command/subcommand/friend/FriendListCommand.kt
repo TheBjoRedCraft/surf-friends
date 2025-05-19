@@ -1,4 +1,4 @@
-package dev.slne.surf.friends.velocity.command.subcommand
+package dev.slne.surf.friends.velocity.command.subcommand.friend
 
 import com.github.shynixn.mccoroutine.velocity.launch
 import dev.jorel.commandapi.CommandAPICommand

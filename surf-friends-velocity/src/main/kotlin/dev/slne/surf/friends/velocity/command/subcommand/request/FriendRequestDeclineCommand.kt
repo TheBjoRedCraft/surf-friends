@@ -1,4 +1,4 @@
-package dev.slne.surf.friends.velocity.command.subcommand
+package dev.slne.surf.friends.velocity.command.subcommand.request
 
 import com.github.shynixn.mccoroutine.velocity.launch
 
@@ -34,6 +34,18 @@ class FriendRequestDeclineCommand(commandName: String): CommandAPICommand(comman
                 }
 
                 friendService.declineFriendRequest(targetUuid, player.uniqueId)
+
+                player.uniqueId.sendText {
+                    success("Du hast die Freundschaftsanfrage von ")
+                    variableValue(target)
+                    success(" abgelehnt.")
+                }
+
+                targetUuid.sendText {
+                    info("Die Freundschaftsanfrage an ")
+                    variableValue(player.username)
+                    info(" wurde abgelehnt.")
+                }
             }
         }
     }

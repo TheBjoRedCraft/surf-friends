@@ -1,15 +1,7 @@
 [versions]
 velocity-api = "3.4.0-SNAPSHOT"
-velocity-annotation = "3.4.0-SNAPSHOT"
 surf-database = "1.0.5-SNAPSHOT"
-fast-util = "8.2.1"
-caffeine-coroutines = "2.0.0"
-commandapi-velocity = "9.7.1-SNAPSHOT"
 
 [libraries]
 velocity-api = { module = "com.velocitypowered:velocity-api", version.ref = "velocity-api" }
-velocity-annotation = { module = "com.velocitypowered:velocity-api", version.ref = "velocity-annotation" }
 surf-database = { module = "dev.slne.surf:surf-database", version.ref = "surf-database" }
-fast-util = { module = "it.unimi.dsi:fastutil", version.ref = "fast-util" }
-caffeine-coroutines = { module = "dev.hsbrysk:caffeine-coroutines", version.ref = "caffeine-coroutines" }
-commandapi-velocity = { module = "dev.jorel:commandapi-velocity-shade", version.ref = "commandapi-velocity" }

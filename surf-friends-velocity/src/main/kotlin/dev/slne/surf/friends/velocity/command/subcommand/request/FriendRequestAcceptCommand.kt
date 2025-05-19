@@ -1,4 +1,4 @@
-package dev.slne.surf.friends.velocity.command.subcommand
+package dev.slne.surf.friends.velocity.command.subcommand.request
 
 import com.github.shynixn.mccoroutine.velocity.launch
 
@@ -12,7 +12,7 @@ import dev.slne.surf.friends.velocity.container
 import dev.slne.surf.friends.velocity.util.sendText
 import dev.slne.surf.surfapi.core.api.service.PlayerLookupService
 
-class FriendAddCommand(commandName: String): CommandAPICommand(commandName) {
+class FriendRequestAcceptCommand(commandName: String): CommandAPICommand(commandName) {
     init {
         stringArgument("player")
         playerExecutor { player, args ->
@@ -24,6 +24,15 @@ class FriendAddCommand(commandName: String): CommandAPICommand(commandName) {
                     }
                 }
 
+                val friendRequest = friendService.getFriendRequest(targetUuid, player.uniqueId)
+
+                if(friendRequest == null) {
+                    player.uniqueId.sendText {
+                        error("Du hast keine Freundschaftsanfrage von $target erhalten.")
+                    }
+                    return@launch
+                }
+
                 val friendShip = friendService.getFriendShip(player.uniqueId, targetUuid)
 
                 if(friendShip != null) {
@@ -33,29 +42,18 @@ class FriendAddCommand(commandName: String): CommandAPICommand(commandName) {
                     return@launch
                 }
 
-                val friendRequest = friendService.getFriendRequest(player.uniqueId, targetUuid)
-
-                if(friendRequest != null) {
-                    player.uniqueId.sendText {
-                        error("Du hast bereits eine Freundschaftsanfrage an $target gesendet.")
-                    }
-                    return@launch
-                }
-
-                friendService.sendFriendRequest(player.uniqueId, targetUuid)
+                friendService.acceptFriendRequest(targetUuid, player.uniqueId)
 
                 player.uniqueId.sendText {
-                    info("Du hast eine Freundschaftsanfrage an ")
+                    success("Du bist nun mit ")
                     variableValue(target)
-                    info(" gesendet.")
-                    //TODO: Add revoke button
+                    success(" befreundet.")
                 }
 
                 targetUuid.sendText {
-                    info("Du hast eine Freundschaftsanfrage von ")
+                    info("Du bist nun mit ")
                     variableValue(player.username)
-                    info(" erhalten.")
-                    //TODO: Add accept and decline buttons
+                    info(" befreundet.")
                 }
             }
         }

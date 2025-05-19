@@ -1,7 +1,6 @@
-package dev.slne.surf.friends.velocity.command.subcommand
+package dev.slne.surf.friends.velocity.command.subcommand.friend
 
 import com.github.shynixn.mccoroutine.velocity.launch
-
 import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.kotlindsl.getValue
 import dev.jorel.commandapi.kotlindsl.playerExecutor
@@ -12,7 +11,7 @@ import dev.slne.surf.friends.velocity.container
 import dev.slne.surf.friends.velocity.util.sendText
 import dev.slne.surf.surfapi.core.api.service.PlayerLookupService
 
-class FriendRequestAcceptCommand(commandName: String): CommandAPICommand(commandName) {
+class FriendRemoveCommand(commandName: String): CommandAPICommand(commandName) {
     init {
         stringArgument("player")
         playerExecutor { player, args ->
@@ -24,36 +23,27 @@ class FriendRequestAcceptCommand(commandName: String): CommandAPICommand(command
                     }
                 }
 
-                val friendRequest = friendService.getFriendRequest(targetUuid, player.uniqueId)
-
-                if(friendRequest == null) {
-                    player.uniqueId.sendText {
-                        error("Du hast keine Freundschaftsanfrage von $target erhalten.")
-                    }
-                    return@launch
-                }
-
                 val friendShip = friendService.getFriendShip(player.uniqueId, targetUuid)
 
-                if(friendShip != null) {
+                if(friendShip == null) {
                     player.uniqueId.sendText {
-                        error("Du bist bereits mit $target befreundet.")
+                        error("Du bist nicht mit $target befreundet.")
                     }
                     return@launch
                 }
 
-                friendService.acceptFriendRequest(targetUuid, player.uniqueId)
+                friendService.removeFriendShip(player.uniqueId, targetUuid)
 
                 player.uniqueId.sendText {
-                    info("Du bist nun mit ")
+                    success("Du hast die Freundschaft mit ")
                     variableValue(target)
-                    info(" befreundet.")
+                    success(" beendet.")
                 }
 
                 targetUuid.sendText {
-                    info("Du bist nun mit ")
+                    info("Die Freundschaft mit ")
                     variableValue(player.username)
-                    info(" befreundet.")
+                    info(" wurde beendet.")
                 }
             }
         }
