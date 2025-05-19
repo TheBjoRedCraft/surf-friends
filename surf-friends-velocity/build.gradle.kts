@@ -4,9 +4,12 @@ plugins {
 
 velocityPluginFile {
     main = "dev.slne.surf.friends.velocity.SurfFriendsPlugin"
+    name = "SurfFriends"
+    id = "surf-friends"
+    authors = listOf("red")
+    description = "Surf Friends Proxy instance."
 
     pluginDependencies {
-        register("surf-api-velocity")
         register("commandapi")
     }
 }
