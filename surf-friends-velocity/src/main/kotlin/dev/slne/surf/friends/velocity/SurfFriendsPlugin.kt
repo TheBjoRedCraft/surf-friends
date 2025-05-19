@@ -15,6 +15,8 @@ import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPIVelocityConfig
 import dev.slne.surf.friends.core.service.databaseService
 import dev.slne.surf.friends.velocity.command.FriendCommand
+import dev.slne.surf.friends.velocity.command.subcommand.friend.FriendListCommand
+import dev.slne.surf.friends.velocity.command.subcommand.request.FriendRequestSendCommand
 import dev.slne.surf.friends.velocity.listener.ConnectionListener
 
 import org.slf4j.Logger
@@ -47,6 +49,8 @@ constructor (
 
         databaseService.connect(dataDirectory)
         FriendCommand("friend").register()
+        FriendRequestSendCommand("fa").register()
+        FriendListCommand("fl").register()
     }
 
     companion object {
