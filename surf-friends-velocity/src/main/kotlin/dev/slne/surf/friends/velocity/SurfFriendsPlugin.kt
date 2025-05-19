@@ -21,7 +21,7 @@ import java.nio.file.Path
 @Plugin (
     id = "surf-friends",
     name = "SurfFriends",
-    version = "6.0.0-SNAPSHOT",
+    version = "1.7.0-SNAPSHOT",
     description = "Surf Friend System",
     authors = ["red"]
 )
@@ -60,4 +60,3 @@ constructor (
 
 val container get() = plugin.proxy.pluginManager.getPlugin("surf-friends").get()
 val plugin get() = SurfFriendsVelocity.INSTANCE
-val gson get() = SurfFriendsVelocity.gson

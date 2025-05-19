@@ -1,4 +1,4 @@
-package dev.slne.surf.friends.fallback
+package dev.slne.surf.friends.fallback.service
 
 import com.google.auto.service.AutoService
 
@@ -22,6 +22,7 @@ import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.update
 
@@ -80,13 +81,15 @@ class FallbackDatabaseService : DatabaseService, Services.Fallback {
     }
 
     override suspend fun getFriendShip(
-        uuid: UUID,
-        friend: UUID
+        playerA: UUID,
+        playerB: UUID
     ): FriendShip? {
         return withContext(Dispatchers.IO) {
             newSuspendedTransaction {
                 FriendShips.select (
-                    (FriendShips.userUuid eq uuid) and (FriendShips.friendUuid eq friend)
+                    (FriendShips.userUuid eq playerA) and (FriendShips.friendUuid eq playerB) or (
+                        (FriendShips.userUuid eq playerB) and (FriendShips.friendUuid eq playerA)
+                    )
                 )
                     .map {
                         CoreFriendShip (
@@ -199,7 +202,9 @@ class FallbackDatabaseService : DatabaseService, Services.Fallback {
         withContext(Dispatchers.IO) {
             newSuspendedTransaction {
                 FriendShips.deleteWhere {
-                    (FriendShips.userUuid eq uuid) and (FriendShips.friendUuid eq friend)
+                    (FriendShips.userUuid eq uuid) and (FriendShips.friendUuid eq friend) or (
+                        (FriendShips.userUuid eq friend) and (FriendShips.friendUuid eq uuid)
+                    )
                 }
             }
         }

@@ -27,7 +27,8 @@ interface FriendService {
      */
     suspend fun removeFriendShip(uuid: UUID, friend: UUID)
 
-    suspend fun getFriendShip(uuid: UUID, friend: UUID): FriendShip?
+    suspend fun getFriendShip(playerA: UUID, playerB: UUID): FriendShip?
+    suspend fun areFriends(uuid: UUID, friend: UUID): FriendShip?
 
     /**
      * Retrieves all friendships of a user.
@@ -85,6 +86,8 @@ interface FriendService {
      * @return A set of FriendRequests representing the senders of the received requests.
      */
     suspend fun getReceivedFriendRequests(uuid: UUID): ObjectSet<FriendRequest>
+
+    suspend fun getFriendRequest(sender: UUID, target: UUID): FriendRequest?
 
     /**
      * Toggles announcements for a user.

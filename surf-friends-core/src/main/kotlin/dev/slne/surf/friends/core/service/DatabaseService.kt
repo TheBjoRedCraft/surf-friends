@@ -19,7 +19,7 @@ interface DatabaseService {
      */
     suspend fun getFriends(uuid: UUID): ObjectSet<FriendShip>
 
-    suspend fun getFriendShip(uuid: UUID, friend: UUID): FriendShip?
+    suspend fun getFriendShip(playerA: UUID, playerB: UUID): FriendShip?
 
     suspend fun getFriendRequest(sender: UUID, target: UUID): FriendRequest?
 

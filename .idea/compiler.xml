@@ -14,9 +14,9 @@
       <module name="surf-friends.surf-friends-fallback" options="-parameters" />
       <module name="surf-friends.surf-friends-fallback.main" options="-parameters" />
       <module name="surf-friends.surf-friends-fallback.test" options="-parameters" />
-      <module name="surf-friends.surf-friends-velocity" options="-parameters -proc:none" />
-      <module name="surf-friends.surf-friends-velocity.main" options="-parameters -proc:none" />
-      <module name="surf-friends.surf-friends-velocity.test" options="-parameters -proc:none" />
+      <module name="surf-friends.surf-friends-velocity" options="-parameters" />
+      <module name="surf-friends.surf-friends-velocity.main" options="-parameters" />
+      <module name="surf-friends.surf-friends-velocity.test" options="-parameters" />
     </option>
   </component>
 </project>

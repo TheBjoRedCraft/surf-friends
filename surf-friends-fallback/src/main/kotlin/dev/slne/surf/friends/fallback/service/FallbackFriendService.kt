@@ -1,9 +1,8 @@
-package dev.slne.surf.friends.fallback
+package dev.slne.surf.friends.fallback.service
 
 import com.google.auto.service.AutoService
 import dev.slne.surf.friends.api.model.FriendRequest
 import dev.slne.surf.friends.api.model.FriendShip
-import dev.slne.surf.friends.core.model.CoreFriendRequest
 import dev.slne.surf.friends.core.service.FriendService
 import dev.slne.surf.friends.core.service.databaseService
 import it.unimi.dsi.fastutil.objects.ObjectSet
@@ -33,6 +32,13 @@ class FallbackFriendService : FriendService, Services.Fallback {
     }
 
     override suspend fun getFriendShip(
+        playerA: UUID,
+        playerB: UUID
+    ): FriendShip? {
+        return databaseService.getFriendShip(playerA, playerB)
+    }
+
+    override suspend fun areFriends(
         uuid: UUID,
         friend: UUID
     ): FriendShip? {
@@ -44,12 +50,11 @@ class FallbackFriendService : FriendService, Services.Fallback {
     }
 
     override suspend fun sendFriendRequest(sender: UUID, receiver: UUID): FriendRequest {
-        val friendRequests = databaseService.getSentFriendRequests(sender)
-        val friendRequest = CoreFriendRequest(
-            senderUuid = sender,
-            receiverUuid = receiver,
-            sentAt = System.currentTimeMillis()
-        )
+        val friendRequest = databaseService.getFriendRequest(sender, receiver)
+
+        if(friendRequest != null) {
+            return friendRequest
+        }
 
         return databaseService.addFriendRequest(sender, receiver)
     }
@@ -91,6 +96,13 @@ class FallbackFriendService : FriendService, Services.Fallback {
 
     override suspend fun getReceivedFriendRequests(uuid: UUID): ObjectSet<FriendRequest> {
         return databaseService.getReceivedFriendRequests(uuid)
+    }
+
+    override suspend fun getFriendRequest(
+        sender: UUID,
+        target: UUID
+    ): FriendRequest? {
+        return databaseService.getFriendRequest(sender, target)
     }
 
     override suspend fun toggleAnnouncements(uuid: UUID): Boolean {

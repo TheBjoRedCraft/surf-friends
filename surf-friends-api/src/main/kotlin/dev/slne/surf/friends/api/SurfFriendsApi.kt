@@ -102,5 +102,5 @@ interface SurfFriendsApi {
      * @param uuid The UUID of the user.
      * @return The FriendUser object representing the user.
      */
-    suspend fun areFriends(uuid: UUID, friend: UUID): FriendShip
+    suspend fun areFriends(uuid: UUID, friend: UUID): FriendShip?
 }
