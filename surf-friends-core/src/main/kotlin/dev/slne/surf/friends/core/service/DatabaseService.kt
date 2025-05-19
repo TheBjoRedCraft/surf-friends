@@ -5,12 +5,15 @@ import dev.slne.surf.friends.api.model.FriendShip
 import dev.slne.surf.friends.api.util.FriendSettingsPair
 import dev.slne.surf.surfapi.core.api.util.requiredService
 import it.unimi.dsi.fastutil.objects.ObjectSet
+import java.nio.file.Path
 import java.util.UUID
 
 /**
  * Interface for database operations related to friendships and settings.
  */
 interface DatabaseService {
+    fun connect(path: Path)
+
     /**
      * Retrieves the list of friends for a given user.
      *

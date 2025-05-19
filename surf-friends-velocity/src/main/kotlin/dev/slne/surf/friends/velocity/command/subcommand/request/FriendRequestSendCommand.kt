@@ -16,7 +16,7 @@ import dev.slne.surf.surfapi.core.api.service.PlayerLookupService
 class FriendRequestSendCommand(commandName: String): CommandAPICommand(commandName) {
     init {
         withPermission(FriendPermissionRegistry.COMMAND_FRIEND_REQUEST_SEND)
-        stringArgument("player")
+        stringArgument("target")
         playerExecutor { player, args ->
             container.launch {
                 val target: String by args

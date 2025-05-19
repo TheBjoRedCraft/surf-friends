@@ -15,7 +15,7 @@ import dev.slne.surf.surfapi.core.api.service.PlayerLookupService
 
 class FriendRequestAcceptCommand(commandName: String): CommandAPICommand(commandName) {
     init {
-        stringArgument("player")
+        stringArgument("target")
         withPermission(FriendPermissionRegistry.COMMAND_FRIEND_REQUEST_ACCEPT)
         playerExecutor { player, args ->
             container.launch {

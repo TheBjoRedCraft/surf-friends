@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     api(project(":surf-friends-core"))
-    compileOnly(libs.surf.database)
+    api(libs.surf.database)
 }

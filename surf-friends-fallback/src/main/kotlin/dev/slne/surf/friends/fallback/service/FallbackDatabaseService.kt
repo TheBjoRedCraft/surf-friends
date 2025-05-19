@@ -17,6 +17,7 @@ import kotlinx.coroutines.withContext
 import net.kyori.adventure.util.Services
 
 import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.and
@@ -24,6 +25,7 @@ import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.or
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 
 import java.nio.file.Path
@@ -31,7 +33,7 @@ import java.util.UUID
 
 @AutoService(DatabaseService::class)
 class FallbackDatabaseService : DatabaseService, Services.Fallback {
-    object FriendShips: Table("friendships") {
+    object FriendShips: Table("friend_ships") {
         val id = integer("id").autoIncrement()
         val userUuid = uuid("user_uuid")
         val friendUuid = uuid("friend_uuid")
@@ -57,8 +59,16 @@ class FallbackDatabaseService : DatabaseService, Services.Fallback {
         override val primaryKey = PrimaryKey(userUuid)
     }
 
-    fun connect(path: Path) {
+    override fun connect(path: Path) {
         DatabaseProvider(path, path).connect()
+
+        transaction {
+            SchemaUtils.create(
+                FriendShips,
+                FriendRequests,
+                FriendSettings
+            )
+        }
     }
 
     override suspend fun getFriends(
