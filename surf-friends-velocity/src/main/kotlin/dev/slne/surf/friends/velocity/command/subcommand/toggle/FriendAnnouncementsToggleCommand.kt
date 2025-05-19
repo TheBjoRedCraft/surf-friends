@@ -5,11 +5,12 @@ import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.kotlindsl.playerExecutor
 import dev.slne.surf.friends.core.service.friendService
 import dev.slne.surf.friends.velocity.container
+import dev.slne.surf.friends.velocity.util.FriendPermissionRegistry
 import dev.slne.surf.friends.velocity.util.sendText
 
 class FriendAnnouncementsToggleCommand(commandName: String) : CommandAPICommand(commandName) {
     init {
-        withPermission("surf.friends.command.friend.toggle.announcements")
+        withPermission(FriendPermissionRegistry.COMMAND_FRIEND_TOGGLE_ANNOUNCEMENTS)
         playerExecutor { player, _ ->
             container.launch {
                 when(friendService.toggleAnnouncements(player.uniqueId)) {

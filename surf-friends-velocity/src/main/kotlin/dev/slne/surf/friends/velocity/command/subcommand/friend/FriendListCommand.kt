@@ -5,10 +5,12 @@ import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.kotlindsl.playerExecutor
 import dev.slne.surf.friends.core.service.friendService
 import dev.slne.surf.friends.velocity.container
+import dev.slne.surf.friends.velocity.util.FriendPermissionRegistry
 import dev.slne.surf.friends.velocity.util.sendText
 
 class FriendListCommand(commandName: String): CommandAPICommand(commandName) {
     init {
+        withPermission(FriendPermissionRegistry.COMMAND_FRIEND_LIST)
         playerExecutor { player, args ->
             container.launch {
                 val friendList = friendService.getFriendShips(player.uniqueId)

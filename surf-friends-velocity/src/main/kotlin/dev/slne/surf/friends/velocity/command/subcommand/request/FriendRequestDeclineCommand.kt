@@ -9,11 +9,13 @@ import dev.jorel.commandapi.kotlindsl.stringArgument
 
 import dev.slne.surf.friends.core.service.friendService
 import dev.slne.surf.friends.velocity.container
+import dev.slne.surf.friends.velocity.util.FriendPermissionRegistry
 import dev.slne.surf.friends.velocity.util.sendText
 import dev.slne.surf.surfapi.core.api.service.PlayerLookupService
 
 class FriendRequestDeclineCommand(commandName: String): CommandAPICommand(commandName) {
     init {
+        withPermission(FriendPermissionRegistry.COMMAND_FRIEND_REQUEST_DECLINE)
         stringArgument("player")
         playerExecutor { player, args ->
             container.launch {

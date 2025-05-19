@@ -10,10 +10,11 @@ import dev.slne.surf.friends.velocity.command.subcommand.request.FriendRequestDe
 import dev.slne.surf.friends.velocity.command.subcommand.request.FriendRequestListCommand
 import dev.slne.surf.friends.velocity.command.subcommand.request.FriendRequestRevokeCommand
 import dev.slne.surf.friends.velocity.command.subcommand.toggle.FriendToggleCommand
+import dev.slne.surf.friends.velocity.util.FriendPermissionRegistry
 
 class FriendCommand(commandName: String): CommandAPICommand(commandName) {
     init {
-        withPermission("surf.friends.command.friend")
+        withPermission(FriendPermissionRegistry.COMMAND_FRIEND)
         withAliases("f")
 
         subcommand(FriendRemoveCommand("remove"))

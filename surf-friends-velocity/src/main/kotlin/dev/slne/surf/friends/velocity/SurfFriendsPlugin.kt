@@ -36,25 +36,15 @@ constructor (
     init {
         suspendingPluginContainer.initialize(this)
         INSTANCE = this
-
-        CommandAPI.onLoad(CommandAPIVelocityConfig(proxy, this))
     }
 
     @Subscribe
     fun onProxyInitialization(event: ProxyInitializeEvent) {
-        CommandAPI.onEnable()
-
         FriendCommand("friend").register()
-    }
-
-    @Subscribe
-    fun onProxyShutdown(event: ProxyShutdownEvent) {
-        CommandAPI.onDisable()
     }
 
     companion object {
         lateinit var INSTANCE: SurfFriendsVelocity
-        val gson = Gson()
     }
 }
 

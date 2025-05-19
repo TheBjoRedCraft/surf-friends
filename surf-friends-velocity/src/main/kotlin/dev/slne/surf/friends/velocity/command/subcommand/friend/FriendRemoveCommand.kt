@@ -8,12 +8,14 @@ import dev.jorel.commandapi.kotlindsl.stringArgument
 
 import dev.slne.surf.friends.core.service.friendService
 import dev.slne.surf.friends.velocity.container
+import dev.slne.surf.friends.velocity.util.FriendPermissionRegistry
 import dev.slne.surf.friends.velocity.util.sendText
 import dev.slne.surf.surfapi.core.api.service.PlayerLookupService
 
 class FriendRemoveCommand(commandName: String): CommandAPICommand(commandName) {
     init {
         stringArgument("player")
+        withPermission(FriendPermissionRegistry.COMMAND_FRIEND_REMOVE)
         playerExecutor { player, args ->
             container.launch {
                 val target: String by args

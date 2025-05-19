@@ -5,11 +5,12 @@ import dev.jorel.commandapi.CommandAPICommand
 import dev.jorel.commandapi.kotlindsl.playerExecutor
 import dev.slne.surf.friends.core.service.friendService
 import dev.slne.surf.friends.velocity.container
+import dev.slne.surf.friends.velocity.util.FriendPermissionRegistry
 import dev.slne.surf.friends.velocity.util.sendText
 
 class FriendSoundToggleCommand(commandName: String) : CommandAPICommand(commandName) {
     init {
-        withPermission("surf.friends.command.friend.toggle.sound")
+        withPermission(FriendPermissionRegistry.COMMAND_FRIEND_TOGGLE_SOUNDS)
         playerExecutor { player, _ ->
             container.launch {
                 when(friendService.toggleSounds(player.uniqueId)) {
