@@ -9,6 +9,7 @@ import dev.slne.surf.friends.velocity.command.subcommand.request.FriendRequestAc
 import dev.slne.surf.friends.velocity.command.subcommand.request.FriendRequestDeclineCommand
 import dev.slne.surf.friends.velocity.command.subcommand.request.FriendRequestListCommand
 import dev.slne.surf.friends.velocity.command.subcommand.request.FriendRequestRevokeCommand
+import dev.slne.surf.friends.velocity.command.subcommand.toggle.FriendToggleCommand
 
 class FriendCommand(commandName: String): CommandAPICommand(commandName) {
     init {
@@ -23,5 +24,7 @@ class FriendCommand(commandName: String): CommandAPICommand(commandName) {
         subcommand(FriendRequestDeclineCommand("decline"))
         subcommand(FriendRequestRevokeCommand("revoke"))
         subcommand(FriendRequestListCommand("requests"))
+
+        subcommand(FriendToggleCommand("toggle"))
     }
 }
