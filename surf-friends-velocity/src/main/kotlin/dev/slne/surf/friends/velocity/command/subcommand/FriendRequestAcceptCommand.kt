@@ -42,7 +42,7 @@ class FriendRequestAcceptCommand(commandName: String): CommandAPICommand(command
                     return@launch
                 }
 
-                friendService.createFriendShip(player.uniqueId, targetUuid)
+                friendService.acceptFriendRequest(targetUuid, player.uniqueId)
 
                 player.uniqueId.sendText {
                     info("Du bist nun mit ")
