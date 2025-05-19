@@ -1,11 +1,17 @@
 plugins {
     id("dev.slne.surf.surfapi.gradle.velocity")
-    kotlin("kapt")
+}
+
+velocityPluginFile {
+    main = "dev.slne.surf.friends.velocity.SurfFriendsPlugin"
+
+    pluginDependencies {
+        register("surf-api-velocity")
+        register("commandapi")
+    }
 }
 
 dependencies {
-    kapt(libs.velocity.api)
-
     api(project(":surf-friends-core"))
     runtimeOnly(project(":surf-friends-fallback"))
 }

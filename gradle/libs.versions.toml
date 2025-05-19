@@ -1,7 +1,5 @@
 [versions]
-velocity-api = "3.4.0-SNAPSHOT"
 surf-database = "1.0.5-SNAPSHOT"
 
 [libraries]
-velocity-api = { module = "com.velocitypowered:velocity-api", version.ref = "velocity-api" }
 surf-database = { module = "dev.slne.surf:surf-database", version.ref = "surf-database" }
