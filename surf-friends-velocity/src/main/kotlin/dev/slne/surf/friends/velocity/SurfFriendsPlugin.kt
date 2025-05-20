@@ -22,7 +22,6 @@ import kotlin.jvm.optionals.getOrNull
 class SurfFriendsPlugin
 @Inject
 constructor (
-    val logger: Logger,
     val proxy: ProxyServer,
     @DataDirectory val dataDirectory: Path,
     suspendingPluginContainer: SuspendingPluginContainer
