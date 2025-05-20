@@ -17,6 +17,8 @@ import dev.slne.surf.friends.velocity.listener.ConnectionListener
 
 import org.slf4j.Logger
 import java.nio.file.Path
+import kotlin.jvm.optionals.getOrNull
+
 class SurfFriendsPlugin
 @Inject
 constructor (
@@ -47,5 +49,5 @@ constructor (
     }
 }
 
-val container get() = plugin.proxy.pluginManager.getPlugin("surf-friends-velocity").get()
+val container get() = plugin.proxy.pluginManager.getPlugin("surf-friends-velocity").getOrNull() ?: throw IllegalArgumentException("The providing plugin container is not available. Got the plugin ID changed?")
 val plugin get() = SurfFriendsPlugin.INSTANCE
