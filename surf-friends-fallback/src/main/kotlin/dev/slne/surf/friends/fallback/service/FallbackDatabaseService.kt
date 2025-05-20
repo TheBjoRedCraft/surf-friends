@@ -178,7 +178,7 @@ class FallbackDatabaseService : DatabaseService, Services.Fallback {
         return withContext(Dispatchers.IO) {
             newSuspendedTransaction {
                 FriendSettings.select (FriendSettings.userUuid eq uuid)
-                    .map { it.toFriendSettingsPair() }
+                    .map { it.toFriendSettings() }
                     .firstOrNull() ?: FriendSettingsPair()
             }
         }
@@ -282,7 +282,7 @@ class FallbackDatabaseService : DatabaseService, Services.Fallback {
         }
     }
 
-    fun ResultRow.toFriendSettingsPair() : FriendSettingsPair {
+    fun ResultRow.toFriendSettings() : FriendSettingsPair {
         return FriendSettingsPair(
             announcementsEnabled = this[FriendSettings.announcementsEnabled],
             soundsEnabled = this[FriendSettings.soundsEnabled]
