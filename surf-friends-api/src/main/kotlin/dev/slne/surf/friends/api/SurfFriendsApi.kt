@@ -97,10 +97,11 @@ interface SurfFriendsApi {
     suspend fun toggleSounds(uuid: UUID): Boolean
 
     /**
-     * Retrieves the friend user object for a given UUID.
+     * Retrieves the friendship object between two users, if it exists.
      *
-     * @param uuid The UUID of the user.
-     * @return The FriendUser object representing the user.
+     * @param uuid The UUID of the first user.
+     * @param friend The UUID of the second user.
+     * @return The FriendShip object representing the friendship, or null if no friendship exists.
      */
-    suspend fun areFriends(uuid: UUID, friend: UUID): FriendShip?
+    suspend fun getFriendship(uuid: UUID, friend: UUID): FriendShip?
 }
