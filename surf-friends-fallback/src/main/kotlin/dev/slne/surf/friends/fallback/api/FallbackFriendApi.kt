@@ -3,7 +3,7 @@ package dev.slne.surf.friends.fallback.api
 import com.google.auto.service.AutoService
 import dev.slne.surf.friends.api.SurfFriendsApi
 import dev.slne.surf.friends.api.model.FriendRequest
-import dev.slne.surf.friends.api.model.FriendShip
+import dev.slne.surf.friends.api.model.Friendship
 import dev.slne.surf.friends.core.service.friendService
 import it.unimi.dsi.fastutil.objects.ObjectSet
 import net.kyori.adventure.util.Services
@@ -11,19 +11,19 @@ import java.util.UUID
 
 @AutoService(SurfFriendsApi::class)
 class FallbackFriendApi: SurfFriendsApi, Services.Fallback {
-    override suspend fun createFriendShip(
+    override suspend fun createFriendship(
         uuid: UUID,
         friend: UUID
-    ): FriendShip {
-        return friendService.createFriendShip(uuid, friend)
+    ): Friendship {
+        return friendService.createFriendship(uuid, friend)
     }
 
-    override suspend fun removeFriendShip(uuid: UUID, friend: UUID) {
-        friendService.removeFriendShip(uuid, friend)
+    override suspend fun removeFriendship(uuid: UUID, friend: UUID) {
+        friendService.removeFriendship(uuid, friend)
     }
 
-    override suspend fun getFriendShips(uuid: UUID): ObjectSet<FriendShip> {
-        return friendService.getFriendShips(uuid)
+    override suspend fun getFriendships(uuid: UUID): ObjectSet<Friendship> {
+        return friendService.getFriendships(uuid)
     }
 
     override suspend fun sendFriendRequest(
@@ -64,7 +64,7 @@ class FallbackFriendApi: SurfFriendsApi, Services.Fallback {
     override suspend fun areFriends(
         uuid: UUID,
         friend: UUID
-    ): FriendShip? {
+    ): Friendship? {
         return friendService.areFriends(uuid, friend)
     }
 }

@@ -1,11 +1,11 @@
 package dev.slne.surf.friends.core.model
 
-import dev.slne.surf.friends.api.model.FriendShip
+import dev.slne.surf.friends.api.model.Friendship
 import java.util.UUID
 
-class CoreFriendShip(
+class CoreFriendship(
     override val userUuid: UUID,
     override val friendUuid: UUID,
     override val createdAt: Long
-) : FriendShip {
+) : Friendship {
 }

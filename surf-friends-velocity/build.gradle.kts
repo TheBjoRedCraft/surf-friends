@@ -8,6 +8,7 @@ velocityPluginFile {
     id = "surf-friends"
     authors = listOf("red")
     description = "Surf Friends Proxy instance."
+    version = "${rootProject.version}"
 
     pluginDependencies {
         register("commandapi")

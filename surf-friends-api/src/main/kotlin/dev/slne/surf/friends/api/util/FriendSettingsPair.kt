@@ -1,6 +1,8 @@
 package dev.slne.surf.friends.api.util
 
-data class FriendSettingsPair (
-    var announcementsEnabled: Boolean = true,
-    var soundsEnabled: Boolean = true
-)
+interface FriendSettingsPair {
+    var announcementsEnabled: Boolean
+    var soundsEnabled: Boolean
+
+    fun copy(block: FriendSettingsPair.() -> Unit): FriendSettingsPair
+}

@@ -1,7 +1,7 @@
 package dev.slne.surf.friends.api
 
 import dev.slne.surf.friends.api.model.FriendRequest
-import dev.slne.surf.friends.api.model.FriendShip
+import dev.slne.surf.friends.api.model.Friendship
 import it.unimi.dsi.fastutil.objects.ObjectSet
 import java.util.UUID
 
@@ -13,7 +13,7 @@ interface SurfFriendsApi {
      * @param friend The UUID of the friend.
      * @return The created FriendShip object.
      */
-    suspend fun createFriendShip(uuid: UUID, friend: UUID): FriendShip
+    suspend fun createFriendship(uuid: UUID, friend: UUID): Friendship
 
     /**
      * Removes a friendship between two users.
@@ -21,7 +21,7 @@ interface SurfFriendsApi {
      * @param uuid The UUID of the first user.
      * @param friend The UUID of the friend.
      */
-    suspend fun removeFriendShip(uuid: UUID, friend: UUID)
+    suspend fun removeFriendship(uuid: UUID, friend: UUID)
 
     /**
      * Retrieves all friendships of a user.
@@ -29,7 +29,7 @@ interface SurfFriendsApi {
      * @param uuid The UUID of the user.
      * @return A set of FriendShips representing the user's friends.
      */
-    suspend fun getFriendShips(uuid: UUID): ObjectSet<FriendShip>
+    suspend fun getFriendships(uuid: UUID): ObjectSet<Friendship>
 
     /**
      * Sends a friend request from one user to another.
@@ -102,5 +102,5 @@ interface SurfFriendsApi {
      * @param uuid The UUID of the user.
      * @return The FriendUser object representing the user.
      */
-    suspend fun areFriends(uuid: UUID, friend: UUID): FriendShip?
+    suspend fun areFriends(uuid: UUID, friend: UUID): Friendship?
 }

@@ -4,10 +4,11 @@ import com.google.auto.service.AutoService
 
 import dev.slne.surf.database.DatabaseProvider
 import dev.slne.surf.friends.api.model.FriendRequest
-import dev.slne.surf.friends.api.model.FriendShip
+import dev.slne.surf.friends.api.model.Friendship
 import dev.slne.surf.friends.api.util.FriendSettingsPair
 import dev.slne.surf.friends.core.model.CoreFriendRequest
-import dev.slne.surf.friends.core.model.CoreFriendShip
+import dev.slne.surf.friends.core.model.CoreFriendship
+import dev.slne.surf.friends.core.pair.CoreFriendSettingsPair
 import dev.slne.surf.friends.core.service.DatabaseService
 import dev.slne.surf.surfapi.core.api.util.toObjectSet
 
@@ -75,12 +76,12 @@ class FallbackDatabaseService : DatabaseService, Services.Fallback {
 
     override suspend fun getFriends(
         uuid: UUID
-    ) : ObjectSet<FriendShip> {
+    ) : ObjectSet<Friendship> {
         return withContext(Dispatchers.IO) {
             newSuspendedTransaction {
                 FriendShips.select (FriendShips.userUuid eq uuid)
                     .map {
-                        CoreFriendShip (
+                        CoreFriendship (
                             userUuid = it[FriendShips.userUuid],
                             friendUuid = it[FriendShips.friendUuid],
                             createdAt = it[FriendShips.created_at]
@@ -92,10 +93,10 @@ class FallbackDatabaseService : DatabaseService, Services.Fallback {
         }
     }
 
-    override suspend fun getFriendShip(
+    override suspend fun getFriendship(
         playerA: UUID,
         playerB: UUID
-    ): FriendShip? {
+    ): Friendship? {
         return withContext(Dispatchers.IO) {
             newSuspendedTransaction {
                 FriendShips.select (
@@ -104,7 +105,7 @@ class FallbackDatabaseService : DatabaseService, Services.Fallback {
                     )
                 )
                     .map {
-                        CoreFriendShip (
+                        CoreFriendship (
                             userUuid = it[FriendShips.userUuid],
                             friendUuid = it[FriendShips.friendUuid],
                             createdAt = it[FriendShips.created_at]
@@ -174,12 +175,12 @@ class FallbackDatabaseService : DatabaseService, Services.Fallback {
 
     override suspend fun getFriendSettings(
         uuid: UUID
-    ) : FriendSettingsPair {
+    ) : CoreFriendSettingsPair {
         return withContext(Dispatchers.IO) {
             newSuspendedTransaction {
                 FriendSettings.select (FriendSettings.userUuid eq uuid)
                     .map { it.toFriendSettings() }
-                    .firstOrNull() ?: FriendSettingsPair()
+                    .firstOrNull() ?: CoreFriendSettingsPair()
             }
         }
     }
@@ -187,7 +188,7 @@ class FallbackDatabaseService : DatabaseService, Services.Fallback {
     override suspend fun addFriendship(
         uuid: UUID,
         friend: UUID
-    ) : FriendShip {
+    ) : Friendship {
         return withContext(Dispatchers.IO) {
             newSuspendedTransaction {
                 val current: Long = System.currentTimeMillis()
@@ -198,7 +199,7 @@ class FallbackDatabaseService : DatabaseService, Services.Fallback {
                     it[FriendShips.created_at] = System.currentTimeMillis()
                 }
 
-                return@newSuspendedTransaction CoreFriendShip(
+                return@newSuspendedTransaction CoreFriendship(
                     userUuid = uuid,
                     friendUuid = friend,
                     createdAt = current
@@ -260,8 +261,8 @@ class FallbackDatabaseService : DatabaseService, Services.Fallback {
 
     override suspend fun updateFriendSettings (
         uuid: UUID,
-        pair: FriendSettingsPair
-    ) : FriendSettingsPair {
+        pair: CoreFriendSettingsPair
+    ) : CoreFriendSettingsPair {
         return withContext(Dispatchers.IO) {
             newSuspendedTransaction {
                 if(FriendSettings.select(FriendSettings.userUuid eq uuid).firstOrNull() == null) {
@@ -282,8 +283,8 @@ class FallbackDatabaseService : DatabaseService, Services.Fallback {
         }
     }
 
-    fun ResultRow.toFriendSettings() : FriendSettingsPair {
-        return FriendSettingsPair(
+    fun ResultRow.toFriendSettings() : CoreFriendSettingsPair {
+        return CoreFriendSettingsPair(
             announcementsEnabled = this[FriendSettings.announcementsEnabled],
             soundsEnabled = this[FriendSettings.soundsEnabled]
         )

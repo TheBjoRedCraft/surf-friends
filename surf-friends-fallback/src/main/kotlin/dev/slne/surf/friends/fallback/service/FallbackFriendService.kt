@@ -2,7 +2,7 @@ package dev.slne.surf.friends.fallback.service
 
 import com.google.auto.service.AutoService
 import dev.slne.surf.friends.api.model.FriendRequest
-import dev.slne.surf.friends.api.model.FriendShip
+import dev.slne.surf.friends.api.model.Friendship
 import dev.slne.surf.friends.core.service.FriendService
 import dev.slne.surf.friends.core.service.databaseService
 import it.unimi.dsi.fastutil.objects.ObjectSet
@@ -11,8 +11,8 @@ import java.util.UUID
 
 @AutoService(FriendService::class)
 class FallbackFriendService : FriendService, Services.Fallback {
-    override suspend fun createFriendShip(uuid: UUID, friend: UUID): FriendShip {
-        val friendShip = databaseService.getFriendShip(uuid, friend)
+    override suspend fun createFriendship(uuid: UUID, friend: UUID): Friendship {
+        val friendShip = databaseService.getFriendship(uuid, friend)
 
         if(friendShip != null) {
             return friendShip
@@ -21,8 +21,8 @@ class FallbackFriendService : FriendService, Services.Fallback {
         return databaseService.addFriendship(uuid, friend)
     }
 
-    override suspend fun removeFriendShip(uuid: UUID, friend: UUID) {
-        val friendShip = databaseService.getFriendShip(uuid, friend)
+    override suspend fun removeFriendship(uuid: UUID, friend: UUID) {
+        val friendShip = databaseService.getFriendship(uuid, friend)
 
         if(friendShip == null) {
             return
@@ -31,21 +31,21 @@ class FallbackFriendService : FriendService, Services.Fallback {
         databaseService.removeFriendship(uuid, friend)
     }
 
-    override suspend fun getFriendShip(
+    override suspend fun getFriendship(
         playerA: UUID,
         playerB: UUID
-    ): FriendShip? {
-        return databaseService.getFriendShip(playerA, playerB)
+    ): Friendship? {
+        return databaseService.getFriendship(playerA, playerB)
     }
 
     override suspend fun areFriends(
         uuid: UUID,
         friend: UUID
-    ): FriendShip? {
-        return databaseService.getFriendShip(uuid, friend)
+    ): Friendship? {
+        return databaseService.getFriendship(uuid, friend)
     }
 
-    override suspend fun getFriendShips(uuid: UUID): ObjectSet<FriendShip> {
+    override suspend fun getFriendships(uuid: UUID): ObjectSet<Friendship> {
         return databaseService.getFriends(uuid)
     }
 
@@ -107,14 +107,18 @@ class FallbackFriendService : FriendService, Services.Fallback {
 
     override suspend fun toggleAnnouncements(uuid: UUID): Boolean {
         val friendSettings = databaseService.getFriendSettings(uuid)
-        val newSettings = friendSettings.copy(announcementsEnabled = !friendSettings.announcementsEnabled)
+        val newSettings = friendSettings.copy {
+            announcementsEnabled = !friendSettings.announcementsEnabled
+        }
 
         return databaseService.updateFriendSettings(uuid, newSettings).announcementsEnabled
     }
 
     override suspend fun toggleSounds(uuid: UUID): Boolean {
         val friendSettings = databaseService.getFriendSettings(uuid)
-        val newSettings = friendSettings.copy(soundsEnabled = !friendSettings.soundsEnabled)
+        val newSettings = friendSettings.copy {
+            soundsEnabled = !friendSettings.soundsEnabled
+        }
 
         return databaseService.updateFriendSettings(uuid, newSettings).soundsEnabled
     }

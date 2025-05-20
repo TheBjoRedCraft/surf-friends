@@ -25,7 +25,7 @@ class FriendRemoveCommand(commandName: String): CommandAPICommand(commandName) {
                     }
                 }
 
-                val friendShip = friendService.getFriendShip(player.uniqueId, targetUuid)
+                val friendShip = friendService.getFriendship(player.uniqueId, targetUuid)
 
                 if(friendShip == null) {
                     player.uniqueId.sendText {
@@ -34,7 +34,7 @@ class FriendRemoveCommand(commandName: String): CommandAPICommand(commandName) {
                     return@launch
                 }
 
-                friendService.removeFriendShip(player.uniqueId, targetUuid)
+                friendService.removeFriendship(player.uniqueId, targetUuid)
 
                 player.uniqueId.sendText {
                     success("Du hast die Freundschaft mit ")

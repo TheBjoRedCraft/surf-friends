@@ -13,7 +13,7 @@ class FriendListCommand(commandName: String): CommandAPICommand(commandName) {
         withPermission(FriendPermissionRegistry.COMMAND_FRIEND_LIST)
         playerExecutor { player, args ->
             container.launch {
-                val friendList = friendService.getFriendShips(player.uniqueId)
+                val friendList = friendService.getFriendships(player.uniqueId)
 
                 if(friendList.isEmpty()) {
                     player.uniqueId.sendText {

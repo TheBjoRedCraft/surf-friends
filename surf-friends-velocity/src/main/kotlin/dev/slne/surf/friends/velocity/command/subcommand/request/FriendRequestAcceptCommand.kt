@@ -35,7 +35,7 @@ class FriendRequestAcceptCommand(commandName: String): CommandAPICommand(command
                     return@launch
                 }
 
-                val friendShip = friendService.getFriendShip(player.uniqueId, targetUuid)
+                val friendShip = friendService.getFriendship(player.uniqueId, targetUuid)
 
                 if(friendShip != null) {
                     player.uniqueId.sendText {
