@@ -17,5 +17,12 @@ velocityPluginFile {
 
 dependencies {
     api(project(":surf-friends-core"))
-    runtimeOnly(project(":surf-friends-fallback"))
+    api(project(":surf-friends-fallback"))
+}
+
+tasks.shadowJar {
+    archiveFileName = when (findProperty("dev-build")?.toString()) {
+        "true" -> "surf-friends-velocity-${rootProject.version}-dev.jar"
+        else -> "surf-friends-velocity-${rootProject.version}.jar"
+    }
 }
