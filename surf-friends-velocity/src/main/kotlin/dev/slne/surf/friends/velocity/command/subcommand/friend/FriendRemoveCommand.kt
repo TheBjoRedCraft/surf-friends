@@ -9,8 +9,8 @@ import dev.jorel.commandapi.kotlindsl.stringArgument
 import dev.slne.surf.friends.core.service.friendService
 import dev.slne.surf.friends.velocity.container
 import dev.slne.surf.friends.velocity.util.FriendPermissionRegistry
+import dev.slne.surf.friends.velocity.util.LookupService
 import dev.slne.surf.friends.velocity.util.sendText
-import dev.slne.surf.surfapi.core.api.service.PlayerLookupService
 
 class FriendRemoveCommand(commandName: String): CommandAPICommand(commandName) {
     init {
@@ -19,7 +19,7 @@ class FriendRemoveCommand(commandName: String): CommandAPICommand(commandName) {
         playerExecutor { player, args ->
             container.launch {
                 val target: String by args
-                val targetUuid = PlayerLookupService.getUuid(target) ?: return@launch run {
+                val targetUuid = LookupService.getUuid(target) ?: return@launch run {
                     player.uniqueId.sendText {
                         error("Der Spieler $target wurde nicht gefunden.")
                     }
